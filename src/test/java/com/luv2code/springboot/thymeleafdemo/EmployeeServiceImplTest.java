@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class EmployeeServiceImplTest {
     @Mock
@@ -73,11 +73,25 @@ public class EmployeeServiceImplTest {
         int id = -1;
         when(employeeRepository.findById(id)).thenReturn(Optional.empty());
         assertThrows(RuntimeException.class,() -> employeeService.findById(id));
+
     }
 
     // test saveEmployee
+    @Test
+    void testSave(){
+        Employee employee1 = new Employee("John", "Doe", "john.doe@example.com");
+        employeeService.save(employee1);
+        verify(employeeRepository,times(1)).save(employee1);
+    }
 
     // test for deleteEmp
+    @Test
+    void testDelete(){
+        int id = 1;
+        Employee employee1 = new Employee("John", "Doe", "john.doe@example.com");
+        employeeService.deleteById(id);
+        verify(employeeRepository,times(1)).delete(employee1);
+    }
 }
 
 
