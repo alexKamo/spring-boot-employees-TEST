@@ -13,8 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class EmployeeServiceImplTest {
@@ -64,10 +63,17 @@ public class EmployeeServiceImplTest {
 
         //then
         assertNotNull(result, "The returned employee shouldn't be NULL");
-
+        assertEquals(id,result.getId(),"id should be 1");
+        assertEquals("john.doe@gmail.com",employee.getEmail());
     }
 
     // test findById when exc thrown
+    @Test
+    void testFindById_ShouldThrowExceptionWhenIdNOExist(){
+        int id = -1;
+        when(employeeRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(RuntimeException.class,() -> employeeService.findById(id));
+    }
 
     // test saveEmployee
 
