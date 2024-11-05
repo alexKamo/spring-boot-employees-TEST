@@ -93,9 +93,21 @@ public class EmployeeControllerTest {
      */
     @Test
     void testRedirectAfterSave() throws Exception {
+        Employee employee = new Employee("John","Doe", "jd@gmnail.com");
 
+        mockMvc.perform(post("/employees/save")  //send POST request to save endpoint
+                        .flashAttr("employee",employee))  //add employee as model attribute
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/employees/list"));
 
+    }
 
+    @Test
+    void testDelete() throws Exception {
+        mockMvc.perform(get("/employees/delete")
+                .param("employeeId","1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/employees/list"));
     }
 }
 
